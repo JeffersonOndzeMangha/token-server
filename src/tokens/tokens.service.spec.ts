@@ -26,6 +26,9 @@ describe('TokensService', () => {
       // generate a randome string
       const secret = randomStringGenerator();
       const resp: CustomResponse = await service.createToken(secret);
+      // creating extra tokens to test getAllTokens and other methods
+      await service.createToken(randomStringGenerator());
+      await service.createToken(randomStringGenerator());
       console.log('createToken resp: ', resp);
       expect(resp.statusCode).toBe(204);
     });
@@ -53,14 +56,14 @@ describe('TokensService', () => {
     });
   });
 
-  // describe('deleteToken', () => {
-  //   it('should delete a token', async () => {
-  //     const { token } = Object.values(service.database.data)[Object.keys(service.database.data).length - 1];
-  //     const resp: CustomResponse = await service.deleteToken(token);
-  //     console.log(`deleteToken ${token} resp: `, resp);
-  //     expect(resp.statusCode).toBe(204);
-  //     expect(resp.message).toEqual('Token deleted successfully');
-  //     expect(service.database.data[token]).not.toBeDefined();
-  //   });
-  // });
+  describe('deleteToken', () => {
+    it('should delete a token', async () => {
+      const { token } = Object.values(service.database.data)[Object.keys(service.database.data).length - 1];
+      const resp: CustomResponse = await service.deleteToken(token);
+      console.log(`deleteToken ${token} resp: `, resp);
+      expect(resp.statusCode).toBe(204);
+      expect(resp.message).toEqual('Token deleted successfully');
+      expect(service.database.data[token]).not.toBeDefined();
+    });
+  });
 });
